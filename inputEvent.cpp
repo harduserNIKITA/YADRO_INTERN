@@ -13,7 +13,7 @@ void kovshikov::getError(const Clock& currentClock, const std::string& smsError,
   addLineOutput(currentClock, "13", smsError, consoleOutput);
 }
 
-void kovshikov::clientCome(const Clock& currentClock, const std::string& clientName, std::queue<std::string>& consoleOutput, cl_com& clientsAndComputers, const Clock& start, const Clock& finish) //start и clock можно забить bindами
+void kovshikov::clientCome(const Clock& currentClock, const std::string& clientName, std::queue<std::string>& consoleOutput, cl_com& clientsAndComputers, const Clock& start, const Clock& finish)
 {
   addLineOutput(currentClock, "1", clientName, consoleOutput);
   if(currentClock < start || currentClock > finish)
@@ -41,10 +41,10 @@ void kovshikov::clientSitDown(const Clock& currentClock, const std::string& clie
     std::string smsError = "ClientUnknown";
     getError(currentClock, smsError, consoleOutput);
   }
-  else if(computersAndClients.find(numComputer) == computersAndClients.end())//может для computersAndClients вообще хватило бы set? ведь нафиг нужно имя клиента тут
+  else if(computersAndClients.find(numComputer) == computersAndClients.end())//может для computersAndClients вообще хватило бы set?
   {
     computersAndClients[numComputer] = clientName;
-    clientsAndComputers[clientName] = numComputer; //
+    clientsAndComputers[clientName] = numComputer;
     computers[numComputer].currentMinutes = currentClock.getInMinutes();
   }
   else
@@ -110,7 +110,6 @@ void kovshikov::clientForciblySit(const Clock& currentClock, std::queue<std::str
 {
   if(!waitingQueue.empty())
   {
-   // addLineOutput(currentClock, "12", waitingClient, consoleOutput, std::to_string(freeingComp));
     std::string waitingClient = waitingQueue.front();
     waitingQueue.pop();
     addLineOutput(currentClock, "12", waitingClient, consoleOutput, std::to_string(freeingComp));
