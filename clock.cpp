@@ -1,4 +1,5 @@
 #include "clock.hpp"
+#include <stdexcept>
 
 int kovshikov::Clock::getInMinutes()
 {
@@ -48,10 +49,9 @@ std::istream& kovshikov::operator>>(std::istream& input, Clock& clock)
   }
   else
   {
-    std::err << "clockStr\n"; //точно ли std::err?? //нужна полностью строка с ошибкой, а это лишь часть, так что думаю надо будет это сообщение просто передать
-    throw Exception;  //нужно проверить как пробрассывать исключение; программа должна завершмтся после того как поймается искючение
+    throw std::invalid_argument(clockStr);
   }
-  return input;
+   return input;
 }
 
 std::ostream& kovshikov::operator<<(std::ostream& out, const Clock& clock)

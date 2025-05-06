@@ -1,7 +1,7 @@
 #ifndef COMPUTER_HPP
 #define COMPUTER_HPP
 
-namespace kovshikov //наверное стоит сделать поле clock и просто усовершенствовать класс clock!!!
+namespace kovshikov
 {
   struct Computer
   {

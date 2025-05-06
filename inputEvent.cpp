@@ -13,7 +13,7 @@ void kovshikov::getError(const Clock& currentClock, const std::string& smsError,
   addLineOutput(currentClock, "13", smsError, consoleOutput);
 }
 
-void kovshikov::clientCome(const Clock& currentClock, const std::string& clientName, std::queu<std::string>& consoleOutput, cl_com& clientsAndComputers, const Clock& start, const Clock& finish) //start и clock можно забить bindами
+void kovshikov::clientCome(const Clock& currentClock, const std::string& clientName, std::queue<std::string>& consoleOutput, cl_com& clientsAndComputers, const Clock& start, const Clock& finish) //start и clock можно забить bindами
 {
   addLineOutput(currentClock, "1", clientName, consoleOutput);
   if(currentClock < start || currentClock > finish)
@@ -32,7 +32,7 @@ void kovshikov::clientCome(const Clock& currentClock, const std::string& clientN
   }
 }
 
-void kovshikov::clientSitDown(const Clock& currentClock, const std::string& clientName, std::queu<std::string>& consoleOutput,
+void kovshikov::clientSitDown(const Clock& currentClock, const std::string& clientName, std::queue<std::string>& consoleOutput,
                                          const cl_com& clientsAndComputers, com_cl& computersAndClients, std::map<int, Computer>& computers, int numComputer)
 {
   addLineOutput(currentClock, "2", clientName, consoleOutput, std::to_string(numComputer));
@@ -53,7 +53,7 @@ void kovshikov::clientSitDown(const Clock& currentClock, const std::string& clie
   }
 }
 
-void kovshikov::clientWait(const Clock& currentClock, const std::string& clientName, std::queu<std::string>& consoleOutput,
+void kovshikov::clientWait(const Clock& currentClock, const std::string& clientName, std::queue<std::string>& consoleOutput,
                                                  cl_com& clientsAndComputers, const com_cl& computersAndClients, size_t countComputers, std::queue<std::string>& waitingQueue)
 {
   addLineOutput(currentClock, "3", clientName, consoleOutput);

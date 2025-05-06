@@ -1,10 +1,8 @@
 #ifndef CLOCK_HPP
 #define CLOCK_HPP
-#include <iostream>
 #include <string>
-//!!!
-//???
-//может быть какие то еще конструкторы нужны?
+#include <iostream>
+
 namespace kovshikov
 {
   struct Clock
