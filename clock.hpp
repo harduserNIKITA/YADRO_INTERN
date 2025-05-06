@@ -12,15 +12,15 @@ namespace kovshikov
     Clock() = default;
     Clock(int h, int m): hours(h), minutes(m) {};
 
-    int getInMinutes();
-    std::string createStringTime();
-  }
+    int getInMinutes() const;
+    std::string createStringTime() const;
+  };
 
   bool isDigit(char ch);
   int twoCharToNumber(char tens, char units);
 
-  std::ostream& operator<<(std::ostream& out, Clock& clock);
-  std::istream& operator>>(std::istream& input, const Clock& clock);
+  std::ostream& operator<<(std::ostream& out, const Clock& clock);
+  std::istream& operator>>(std::istream& input, Clock& clock);
   bool operator>(const Clock& left, const Clock& right);
   bool operator<(const Clock& left, const Clock& right);
 }

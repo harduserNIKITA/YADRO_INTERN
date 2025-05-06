@@ -1,4 +1,5 @@
 //#include <functional>
+#include <stdexcept>
 #include "inputEvent.hpp"
 
 namespace kovshikov
@@ -8,8 +9,8 @@ namespace kovshikov
 
     for(char ch : name)
     {
-      int ascii = (int)ch
-      if(!(asii > 47 && ascii < 58) && (ascii > 96 && ascii < 123))
+      int ascii = (int)ch;
+      if(!(ascii > 47 && ascii < 58) && (ascii > 96 && ascii < 123))
       {
         return false;
       }
@@ -23,25 +24,23 @@ namespace kovshikov
     size_t countComputers;
     int cost = 0;
     Clock start, finish;
-    std::cin >> computers;
+    std::cin >> countComputers;
     try
     {
       std::cin >> start >> finish;
     }
-    catch(const std::invalid_exception& e)
+    catch(const std::invalid_argument& e)
     {
-      std::err << e.what();
+      std::cerr << e.what();
       return 1;
     }
     std::cin >> cost;
 
-    std::queu<std::string> consolOutput;
+    std::queue<std::string> consoleOutput;
     std::unordered_map<std::string, int> clientsAndComputers;
     std::unordered_map<int, std::string> computersAndClients;
     std::queue<std::string> waitingQueue;
     std::map<int, Computer> computers;
-
-    std::map<int, std::function< void()>>
 
     bool isError = false;
     while(std::cin.eof()) //до конца ввода
@@ -55,7 +54,7 @@ namespace kovshikov
       {
         std::cin >> currentClock;
       }
-      catch(const std::invalid_exception& e)
+      catch(const std::invalid_argument& e)
       {
         errorClock = e.what();
         isError = true;
@@ -68,7 +67,7 @@ namespace kovshikov
       }
 
       std::cin >> clientName;
-      if(checkingClientName == false)
+      if(checkingClientName(clientName) == false)
       {
         isError = true;
       }
@@ -124,8 +123,8 @@ namespace kovshikov
     }
     else
     {
-      clientForcibleLeave(finish, consoleOutput, clientsAndComputers, computers);
-      endOfDay(start, finish, consoleOutput, computers);
+      clientForciblyLeave(finish, consoleOutput, clientsAndComputers, computers);
+      endOfDay(start, finish, consoleOutput, computers, cost);
     }
   }
 }
