@@ -1,4 +1,5 @@
 //#include <functional>
+#include <fstream> //
 #include <stdexcept>
 #include "inputEvent.hpp"
 
@@ -11,7 +12,7 @@ namespace kovshikov
       int ascii = (int)ch;
       if(!((ascii > 47 && ascii < 58) || (ascii > 96 && ascii < 123)))
       {
-        //std::cout << ascii << ch << "\n"; //
+        std::cout << ascii << ch << "\n"; //
         return false;
       }
     }
@@ -19,23 +20,37 @@ namespace kovshikov
   }
 }
 
-int main()
+int main(int argc, char* argv[])
 {
+//--
+  if(argc != 2)
+  {
+    std::cerr << "Arquments NOT TWO\n";
+    return 1;
+  }
+
+  std::ifstream inputFile(argv[1]);
+  if (!inputFile.is_open())
+  {
+    std::cerr << "Can't OPEN FILE\n";
+    return 1;
+  }
+//--
   std::vector<std::string> error;
   size_t countComputers;
   int cost = 0;
   kovshikov::Clock start, finish;
-  std::cin >> countComputers;
+  inputFile >> countComputers; //
   try
   {
-    std::cin >> start >> finish;
+    inputFile >> start >> finish; //
   }
   catch(const std::invalid_argument& e)
   {
     std::cerr << e.what();
     return 1;
   }
-  std::cin >> cost;
+  inputFile >> cost; //
 
   std::queue<std::string> consoleOutput;
   std::unordered_map<std::string, int> clientsAndComputers;
@@ -44,8 +59,10 @@ int main()
   std::map<int, kovshikov::Computer> computers;
 
   bool isError = false;
-  while(true) //до конца ввода
+  int count = 0; //
+  while(!inputFile.eof()) //до конца ввода
   {
+    count += 1; //
     std::string errorClock = "";
     kovshikov::Clock currentClock;
     int task;
@@ -53,36 +70,37 @@ int main()
     int numComputer = 0;
     try
     {
-      std::cin >> currentClock;
+      inputFile >> currentClock;
     }
     catch(const std::invalid_argument& e)
     {
-      //std::cout << "TIME_ERROR\n"; //
+      if(inputFile.eof())
+      {
+        break;
+      }
+      std::cout << "TIME_ERROR\n"; //
+      std::cout << count; //
       errorClock = e.what();
       isError = true;
     }
 
-    std::cin >> task;
-    if(task == 52)
-    {
-      break;
-    }
+    inputFile >> task; //
     if(task != 1 && task != 2 && task != 3 && task != 4 && task != 11 && task != 12 && task != 13)
     {
-      //std::cout << task << "TASK_ERROR\n"; //
+      std::cout << task << "TASK_ERROR\n"; //
       isError = true;
     }
 
-    std::cin >> clientName;
+    inputFile >> clientName; //
     if(kovshikov::checkingClientName(clientName) == false)
     {
-      //std::cout << "ERROR_NAME\n"; //
+      std::cout << "ERROR_NAME\n"; //
       isError = true;
     }
 
     if(task == 2)
     {
-      std::cin >> numComputer;
+      inputFile >> numComputer; //
       if(static_cast<size_t>(numComputer) > countComputers)
       {
         isError = true;
@@ -91,7 +109,7 @@ int main()
 
     if(isError == true)
     {
-      //std::cout << "ERROR\n"; //
+      std::cout << "ERROR\n"; //
       error.push_back(errorClock);
       error.push_back(std::to_string(task));
       error.push_back(clientName);
@@ -104,19 +122,22 @@ int main()
 
     if(task == 1)
     {
-      //std::cout << "TASK1\n"; //
+      std::cout << "TASK1\n"; //
       kovshikov::clientCome(currentClock, clientName, consoleOutput, clientsAndComputers, start, finish);
     }
     else if(task == 2)
     {
+      std::cout << "TASK2\n"; //
       kovshikov::clientSitDown(currentClock, clientName, consoleOutput, clientsAndComputers, computersAndClients, computers, numComputer);
     }
     else if(task == 3)
     {
+      std::cout << "TASK3\n"; //
       kovshikov::clientWait(currentClock, clientName, consoleOutput, clientsAndComputers, computersAndClients, countComputers, waitingQueue);
     }
     else if(task == 4)
     {
+      std::cout << "TASK4\n"; //
       kovshikov::clientLeave(currentClock, clientName, consoleOutput, clientsAndComputers, computersAndClients, computers,  waitingQueue);
     }
 
