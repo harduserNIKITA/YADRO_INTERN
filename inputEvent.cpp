@@ -4,7 +4,7 @@
 void kovshikov::addLineOutput(const Clock& currentClock, const std::string& num, const std::string& str, std::queue<std::string>& consoleOutput, const std::string& optionalStr)
 {
   std::string lineOutput;
-  lineOutput += currentClock.createStringTime() + " " + num + " " + str + optionalStr;
+  lineOutput += currentClock.createStringTime() + " " + num + " " + str + " " + optionalStr;
   consoleOutput.push(lineOutput);
 }
 
@@ -33,7 +33,7 @@ void kovshikov::clientCome(const Clock& currentClock, const std::string& clientN
 }
 
 void kovshikov::clientSitDown(const Clock& currentClock, const std::string& clientName, std::queue<std::string>& consoleOutput,
-                                         const cl_com& clientsAndComputers, com_cl& computersAndClients, std::map<int, Computer>& computers, int numComputer)
+                                         cl_com& clientsAndComputers, com_cl& computersAndClients, std::map<int, Computer>& computers, int numComputer)
 {
   addLineOutput(currentClock, "2", clientName, consoleOutput, std::to_string(numComputer));
   if(clientsAndComputers.find(clientName) == clientsAndComputers.end())
@@ -44,6 +44,7 @@ void kovshikov::clientSitDown(const Clock& currentClock, const std::string& clie
   else if(computersAndClients.find(numComputer) == computersAndClients.end())//может для computersAndClients вообще хватило бы set? ведь нафиг нужно имя клиента тут
   {
     computersAndClients[numComputer] = clientName;
+    clientsAndComputers[clientName] = numComputer; //
     computers[numComputer].currentMinutes = currentClock.getInMinutes();
   }
   else
@@ -89,7 +90,7 @@ void kovshikov::clientLeave(const Clock& currentClock, const std::string& client
     computersAndClients.erase(freeingComp);
     computers[freeingComp].exitMinutes = currentClock.getInMinutes();
     computers[freeingComp].update();
-    clientForciblySit(currentClock, clientName, consoleOutput, freeingComp, clientsAndComputers, computersAndClients, computers, waitingQueue);
+    clientForciblySit(currentClock, consoleOutput, freeingComp, clientsAndComputers, computersAndClients, computers, waitingQueue);
   }
 }
 
@@ -104,14 +105,15 @@ void kovshikov::clientForciblyLeave(const Clock& finish, std::queue<std::string>
   }
 }
 
-void kovshikov::clientForciblySit(const Clock& currentClock, const std::string& clientName, std::queue<std::string>& consoleOutput, int freeingComp, cl_com& clientsAndComputers,
+void kovshikov::clientForciblySit(const Clock& currentClock, std::queue<std::string>& consoleOutput, int freeingComp, cl_com& clientsAndComputers,
                                              com_cl& computersAndClients, std::map<int, Computer>& computers, std::queue<std::string>& waitingQueue)
 {
   if(!waitingQueue.empty())
   {
-    addLineOutput(currentClock, "12", clientName, consoleOutput, std::to_string(freeingComp));
+   // addLineOutput(currentClock, "12", waitingClient, consoleOutput, std::to_string(freeingComp));
     std::string waitingClient = waitingQueue.front();
     waitingQueue.pop();
+    addLineOutput(currentClock, "12", waitingClient, consoleOutput, std::to_string(freeingComp));
     clientsAndComputers[waitingClient] = freeingComp;
     computersAndClients[freeingComp] = waitingClient;
     computers[freeingComp].currentMinutes = currentClock.getInMinutes();

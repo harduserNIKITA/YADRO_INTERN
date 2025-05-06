@@ -62,7 +62,7 @@ std::ostream& kovshikov::operator<<(std::ostream& out, const Clock& clock)
 
 bool kovshikov::operator>(const Clock& left, const Clock& right)
 {
-  return (left.hours, left.minutes) > (right.hours, right.minutes);
+  return left.getInMinutes() > right.getInMinutes();
 }
 
 bool kovshikov::operator<(const Clock& left, const Clock& right)

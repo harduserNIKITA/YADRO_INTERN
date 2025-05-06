@@ -6,12 +6,12 @@ namespace kovshikov
 {
   bool checkingClientName(const std::string& name)
   {
-
     for(char ch : name)
     {
       int ascii = (int)ch;
-      if(!(ascii > 47 && ascii < 58) && (ascii > 96 && ascii < 123))
+      if(!((ascii > 47 && ascii < 58) || (ascii > 96 && ascii < 123)))
       {
+        //std::cout << ascii << ch << "\n"; //
         return false;
       }
     }
@@ -44,7 +44,7 @@ int main()
   std::map<int, kovshikov::Computer> computers;
 
   bool isError = false;
-  while(std::cin.eof()) //до конца ввода
+  while(true) //до конца ввода
   {
     std::string errorClock = "";
     kovshikov::Clock currentClock;
@@ -57,19 +57,26 @@ int main()
     }
     catch(const std::invalid_argument& e)
     {
+      //std::cout << "TIME_ERROR\n"; //
       errorClock = e.what();
       isError = true;
     }
 
     std::cin >> task;
+    if(task == 52)
+    {
+      break;
+    }
     if(task != 1 && task != 2 && task != 3 && task != 4 && task != 11 && task != 12 && task != 13)
     {
+      //std::cout << task << "TASK_ERROR\n"; //
       isError = true;
     }
 
     std::cin >> clientName;
     if(kovshikov::checkingClientName(clientName) == false)
     {
+      //std::cout << "ERROR_NAME\n"; //
       isError = true;
     }
 
@@ -84,6 +91,7 @@ int main()
 
     if(isError == true)
     {
+      //std::cout << "ERROR\n"; //
       error.push_back(errorClock);
       error.push_back(std::to_string(task));
       error.push_back(clientName);
@@ -96,6 +104,7 @@ int main()
 
     if(task == 1)
     {
+      //std::cout << "TASK1\n"; //
       kovshikov::clientCome(currentClock, clientName, consoleOutput, clientsAndComputers, start, finish);
     }
     else if(task == 2)
