@@ -1,3 +1,4 @@
+//#include <functional>
 #include "inputEvent.hpp"
 
 namespace kovshikov
@@ -40,7 +41,7 @@ namespace kovshikov
     std::queue<std::string> waitingQueue;
     std::map<int, Computer> computers;
 
-    
+    std::map<int, std::function< void()>>
 
     bool isError = false;
     while(std::cin.eof()) //до конца ввода
@@ -93,7 +94,24 @@ namespace kovshikov
         break;
       }
 
-     //диспетчеризация
+      if(task == 1)
+      {
+        clientCome(currentClock, clientName, consoleOutput, clientsAndComputers, start, finish);
+      }
+      else if(task == 2)
+      {
+        clientSitDown(currentClock, clientName, consoleOutput, clientsAndComputers, computersAndClients, computers, numComputer);
+      }
+      else if(task == 3)
+      {
+        clientWait(currentClock, clientName, consoleOutput, clientsAndComputers, computersAndClients, countComputers, waitingQueue);
+      }
+      else if(task == 4)
+      {
+        clientLeave(currentClock, clientName, consoleOutput, clientsAndComputers, computersAndClients, computers,  waitingQueue);
+      }
+
+     //нужна по-хорошему диспетчеризация
     }
     if(isError)
     {
