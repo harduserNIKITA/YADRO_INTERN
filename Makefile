@@ -1,14 +1,14 @@
-# Компилятор (используем gcc, но для C++ это нестандартно)
-CC := gcc
+# Компилятор
+CXX := g++
 
-# Флаги компиляции для C++ (явно указываем язык и библиотеки)
-CFLAGS := -Wall -Wextra -std=c++17 -O2 -lstdc++
+# Флаги компиляции
+CXXFLAGS := -Wall -Wextra -std=c++17 -O2
 
 # Имя исполняемого файла
 TARGET := result
 
 # Исходные файлы (.cpp)
-SRCS := clock.cpp main.cpp inputEvent.cpp
+SRCS := clock.cpp main.cpp inputEvent.cpp computer.cpp
 
 # Объектные файлы (.o)
 OBJS := $(SRCS:.cpp=.o)
@@ -18,16 +18,17 @@ all: $(TARGET)
 
 # Сборка исполняемого файла из объектных
 $(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CXX) $(CXXFLAGS) -o $@ $^ -lstdc++
 
 # Правило для компиляции .cpp в .o
 %.o: %.cpp
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Заголовочные зависимости
 clock.o: clock.hpp
-inputEvent.o: inputEvent.hpp
-main.o: computer.hpp  # Если main.cpp использует computer.hpp
+inputEvent.o: inputEvent.hpp computer.hpp
+computer.o: computer.hpp
+main.o: inputEvent.hpp clock.hpp computer.hpp
 
 # Очистка
 clean:
