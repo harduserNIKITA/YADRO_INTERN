@@ -1,37 +1,37 @@
-# Компилятор
+# Компилятор и флаги
 CXX := g++
-
-# Флаги компиляции
 CXXFLAGS := -Wall -Wextra -std=c++17 -O2
+LDFLAGS := -lstdc++
 
-# Имя исполняемого файла
+# Целевые файлы
 TARGET := result
-
-# Исходные файлы (.cpp)
 SRCS := clock.cpp main.cpp inputEvent.cpp computer.cpp
-
-# Объектные файлы (.o)
 OBJS := $(SRCS:.cpp=.o)
+DEPS := clock.hpp inputEvent.hpp computer.hpp
 
-# Основная цель сборки
+# Основные цели
 all: $(TARGET)
 
-# Сборка исполняемого файла из объектных
 $(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $@ $^ -lstdc++
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
-# Правило для компиляции .cpp в .o
-%.o: %.cpp
+# Шаблонное правило для объектных файлов
+%.o: %.cpp $(DEPS)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Заголовочные зависимости
+# Явные зависимости (для более точного контроля)
 clock.o: clock.hpp
 inputEvent.o: inputEvent.hpp computer.hpp
 computer.o: computer.hpp
-main.o: inputEvent.hpp clock.hpp computer.hpp
+main.o: $(DEPS)
+
+# Тест запуска (дополнительная цель)
+test: $(TARGET)
+	@echo "Запуск с тестовым файлом..."
+	@./$(TARGET) test_data.txt
 
 # Очистка
 clean:
 	rm -f $(TARGET) $(OBJS)
 
-.PHONY: all clean
+.PHONY: all clean test
