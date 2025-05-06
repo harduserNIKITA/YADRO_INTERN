@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 //!!!
+//???
 //может быть какие то еще конструкторы нужны?
 namespace kovshikov
 {
