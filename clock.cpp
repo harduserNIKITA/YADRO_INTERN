@@ -1,11 +1,12 @@
 #include "clock.hpp"
+#include <stdexcept>
 
-int kovshikov::Clock::getInMinutes()
+int kovshikov::Clock::getInMinutes() const
 {
   return hours * 60 + minutes;
 }
 
-std::string kovshikov::Clock::createStringTime()
+std::string kovshikov::Clock::createStringTime() const
 {
   std::string strTime;
   if(hours < 10)
@@ -23,7 +24,7 @@ std::string kovshikov::Clock::createStringTime()
 
 bool kovshikov::isDigit(char ch)
 {
-  int asii = (int) ch;
+  int ascii = (int) ch;
   if(ascii > 47 && ascii < 58)
   {
     return true;
@@ -40,7 +41,7 @@ std::istream& kovshikov::operator>>(std::istream& input, Clock& clock)
 {
   std::string clockStr;
   input >> clockStr;
-  bool isCorrectNum = IsDigit(clockStr[0]) && IsDigit(clockStr[1]) && IsDigit(clockStr[3]) && IsDigit(clockStr[4]);
+  bool isCorrectNum = isDigit(clockStr[0]) && isDigit(clockStr[1]) && isDigit(clockStr[3]) && isDigit(clockStr[4]);
   if(clockStr.length() == 5 && isCorrectNum && clockStr[2] == ':')
   {
     clock.hours = twoCharToNumber(clockStr[0], clockStr[1]);
@@ -48,20 +49,20 @@ std::istream& kovshikov::operator>>(std::istream& input, Clock& clock)
   }
   else
   {
-    std::err << "clockStr\n"; //точно ли std::err?? //нужна полностью строка с ошибкой, а это лишь часть, так что думаю надо будет это сообщение просто передать
-    throw Exception;  //нужно проверить как пробрассывать исключение; программа должна завершмтся после того как поймается искючение
+    throw std::invalid_argument(clockStr);
   }
-  return input;
+   return input;
 }
 
 std::ostream& kovshikov::operator<<(std::ostream& out, const Clock& clock)
 {
   out << clock.createStringTime();
+  return out;
 }
 
 bool kovshikov::operator>(const Clock& left, const Clock& right)
 {
-  return (left.hours, left.minutes) > (right.hours, right.minutes);
+  return left.getInMinutes() > right.getInMinutes();
 }
 
 bool kovshikov::operator<(const Clock& left, const Clock& right)
